@@ -1,0 +1,10 @@
+chat
+chien
+maison
+arbre
+voiture
+vache
+jeu
+banane
+pomme
+velo
