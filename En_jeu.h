@@ -24,8 +24,10 @@ int appartient_dans_ordre_rail(Rail* R, char* rail,Sens sens);
 
 void supppresion_chevalets_rail(PAQUETS* J1, char* j1, PAQUETS* J2, char* j2);
 
-void deplacement_rail_chevalet(PAQUETS* Joueur, char* mot_rail);
+void ajout_lettre_chevalet(PAQUETS* Joueur, char* lettre_rail);
 
 void deplacement_chevalet_rail(Rail* R, char* mot_joueur);
 
 void suppresion_lettre_joueur(PAQUETS* J, char* mot_joueur);
+
+void sauvegarde_lettre_rail_vers_chevalet(Rail* R, char* mot_joueur, char* lettre_rail);

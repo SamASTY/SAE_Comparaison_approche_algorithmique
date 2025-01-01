@@ -107,28 +107,41 @@ int diviser_droite(char *com, char *rail, char *joueur, char *mot) {
 
 int appartient_joueur(PAQUETS* J, char* mot_joueur) {
     for (int i = 0; mot_joueur[i] != '\0'; i++) {
-        if (est_dans(J, mot_joueur[i]) != 1)
+        if (est_dans(J, mot_joueur[i]) == 0)
             return 0;
     }
     return 1;
 }
 
-int appartient_dans_ordre_rail(Rail* R, char* rail,Sens sens) {
-    if (sens == DROITE) {
-        int taille_rail = strlen(rail);
-        for (int i = taille_rail, j = TAILLERAIL-taille_rail; rail[i] != '\0'; i++ , j--) {
-            if (R->lettres[j] != rail[i])
-                return 0;
-        }
-    }
+
+int appartient_dans_ordre_rail(Rail* R, char* mot, Sens sens) {
+    int i, j;
+    int taille_rail = strlen(R->lettres);
+    int taille_mot = strlen(mot);
+
     if (sens == GAUCHE) {
-        for (int i =0; rail[i] != '\0'; i++) {
-            if (R->lettres[i] != rail[i])
-                return 0;
+        for (i = 0; i <= taille_rail - taille_mot; i++) {
+            for (j = 0; j <= taille_mot; j++) {
+                if (strncmp(R->lettres + i, mot, j) == 0) {
+                    return 1;
+                }
+            }
         }
     }
-    return 1;
+
+    if (sens == DROITE) {
+        for (i = taille_rail - 1; i >= taille_mot - 1; i--) {
+            for (j = 0; j <= taille_mot; j++) {
+                if (strncmp(R->lettres + i - j, mot, j) == 0) {
+                    return 1;
+                }
+            }
+        }
+    }
+
+    return 0;
 }
+
 
 void supppresion_chevalets_rail(PAQUETS* J1, char* j1, PAQUETS* J2, char* j2) {
     for (int i = 0; j1[i] != '\0'; i++)
@@ -137,20 +150,34 @@ void supppresion_chevalets_rail(PAQUETS* J1, char* j1, PAQUETS* J2, char* j2) {
         MoinsPaquet(J2, j2[i]);
 }
 
-void deplacement_rail_chevalet(PAQUETS* Joueur, char* mot_rail) {
-    for (int i = 0; mot_rail[i] != '\0'; i++)
-        PlusPaquet(Joueur, mot_rail[i]);
+void ajout_lettre_chevalet(PAQUETS* Joueur, char* lettre_rail) {
+    for (int i = 0; lettre_rail[i] != '\0'; i++)
+        PlusPaquet(Joueur, lettre_rail[i]);
+    printf("les cartes des rails sont dans le paquets :");
+    AfficherPaquettrier(Joueur);
+}
+
+void sauvegarde_lettre_rail_vers_chevalet(Rail* R, char* mot_joueur, char* lettre_rail) {
+    for (int i = 0; mot_joueur[i] != '\0'; i++)
+        lettre_rail[i] = R->lettres[i];
 }
 
 void deplacement_chevalet_rail(Rail* R, char* mot_joueur) {
     int a_decaler = strlen(mot_joueur);
     Decalage(R, a_decaler);
+    printf("le rails est decaler :");
+    AfficherRails(R);
     for (int i = 0; mot_joueur[i] != '\0'; i++) {
         R->lettres[i] = mot_joueur[i];
     }
+    printf("le rails est a jour avec les lettres du joueurs :");
+    AfficherRails(R);
 }
 
 void suppresion_lettre_joueur(PAQUETS* J, char* mot_joueur) {
     for (int i = 0; mot_joueur[i] != '\0'; i++)
         MoinsPaquet(J, mot_joueur[i]);
+    printf("Lettre utiliser par le joueur supprimer du paquets: ");
+    AfficherPaquettrier(J);
 }
+

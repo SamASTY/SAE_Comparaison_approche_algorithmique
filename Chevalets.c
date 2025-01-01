@@ -105,7 +105,6 @@ void PlusPaquet(PAQUETS *P, char L) {
     ajouter(&P->lettres, lettre);
 }
 
-
 void LibererPaquets(PAQUETS* P) {
     detruireVecteur(&P->lettres);
 }
