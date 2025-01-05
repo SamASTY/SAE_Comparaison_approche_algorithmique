@@ -26,8 +26,20 @@ void supppresion_chevalets_rail(PAQUETS* J1, char* j1, PAQUETS* J2, char* j2);
 
 void ajout_lettre_chevalet(PAQUETS* Joueur, char* lettre_rail);
 
-void deplacement_chevalet_rail(Rail* R, char* mot_joueur);
+void deplacement_chevalet_rail(Rail* R, char* mot_joueur, Sens div);
 
 void suppresion_lettre_joueur(PAQUETS* J, char* mot_joueur);
 
 void sauvegarde_lettre_rail_vers_chevalet(Rail* R, char* mot_joueur, char* lettre_rail);
+
+void inverser_chaine_caractere(char* chaine);
+
+int coup_joueur_R_V(char* commande, PAQUETS *Joueur, Rail *R_r, Rail *R_v, char* mot);
+
+int coup_joueur_echange_lettre(char* commande, PAQUETS *Joueur, Alphabet* Pioche);
+
+void afficher_etat_jeu(PAQUETS* J1, PAQUETS* J2, Rail* RR, Rail* RV);
+
+void gererTour(int jeu, PAQUETS* joueur, PAQUETS* joueur_adverse, Rail* recto, Rail* verso, Alphabet* pioche, PAQUETS* Djoueur,Rail* Drecto, Rail* Dverso );
+
+void nettoyerTampon();

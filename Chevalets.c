@@ -63,11 +63,12 @@ int comparerLettre(const void* a, const void* b) {
     return AfficherLettre(lettreA) - AfficherLettre(lettreB);
 }
 
-void EchangePioche(Alphabet* Alpha, Lettre* L) {
-    char lettre_in = AfficherLettre(L);
-    PlusAlpha(Alpha, lettre_in);
-    char lettre_out  = piochePaquet(Alpha);
-    InitLettres(L, lettre_out);
+void EchangePioche(Alphabet* Alpha, char L, PAQUETS* J) {
+    printf("\n");
+    PlusAlpha(Alpha, L);
+    MoinsPaquet(J, L);
+    char lettre_ajout = piochePaquet(Alpha);
+    PlusPaquet(J, lettre_ajout);
 }
 
 int est_dans(const PAQUETS* paquet, const char L) {

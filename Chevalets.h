@@ -39,7 +39,7 @@ void AfficherPaquettrier(PAQUETS* paquet);
 
 int comparerLettre(const void* a, const void* b);
 
-void EchangePioche(Alphabet* Alpha, Lettre* L);
+void EchangePioche(Alphabet* Alpha, char L, PAQUETS* J);
 
 int est_dans(const PAQUETS* paquet, const char L);
 

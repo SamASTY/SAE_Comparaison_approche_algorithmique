@@ -20,7 +20,6 @@ void InitRail(Rail* rail, char mot1[NBMAXLETTRES], char mot2[NBMAXLETTRES]);
  */
 void AfficherRails(Rail* R);
 
-
 int est_dans_rail(Rail* R, const char L) ;
 
 void inverser_rail(Rail* dans_ordre, Rail* inverser);

@@ -120,7 +120,7 @@ void MoinsAlpha(Alphabet *Alpha, char L) {
 void PlusAlpha(Alphabet *Alpha, char L) {
     Lettre lettre;
     InitLettres(&lettre,L);
-    ajouter(&Alpha->lettres, lettre); // non
+    ajouter(&Alpha->lettres, lettre);
 }
 
 void LibererAlphabeth(Alphabet* Alpha) {
