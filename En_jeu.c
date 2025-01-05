@@ -203,7 +203,6 @@ int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *
     division = (commande[2] == '(')
                    ? diviser_droite(commande, rail, joueur, mot)
                    : diviser_gauche(commande, rail, joueur, mot);
-    printf("commande : %s, rail : %s, joueur : %s, mot : %s, division ->%d", commande, rail, joueur, mot, division);
     if (division != NUL) {
         if (commande[0] == 'R' && appartient_joueur(Joueur, joueur) &&
             appartient_dans_ordre_rail(R_r, rail, division)
@@ -217,31 +216,33 @@ int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *
             return resultat_coup;
         }
 
-        char lettre_rail[TAILLEMAXMOT] = "";
-        strcpy(lettre_rail, joueur);
-        if ((commande[0] == 'R' && division == GAUCHE)
-            || (commande[0] == 'V' && division == DROITE)) {
-            sauvegarde_lettre_rail_vers_chevalet(R_v, joueur, lettre_rail);
-            deplacement_chevalet_rail(R_r, joueur, division);
-            dupliquer_rail_inv(R_r, R_v);
-        } else {
-            sauvegarde_lettre_rail_vers_chevalet(R_r, joueur, lettre_rail);
-            deplacement_chevalet_rail(R_v, joueur, division);
-            dupliquer_rail_inv(R_v, R_r);
+        if (commande[0] == 'R' || commande[0] == 'V') {
+            char lettre_rail[TAILLEMAXMOT] = "";
+            strcpy(lettre_rail, joueur);
+            if ((commande[0] == 'R' && division == GAUCHE)
+                || (commande[0] == 'V' && division == DROITE)) {
+                sauvegarde_lettre_rail_vers_chevalet(R_v, joueur, lettre_rail);
+                deplacement_chevalet_rail(R_r, joueur, division);
+                dupliquer_rail_inv(R_r, R_v);
+            } else {
+                sauvegarde_lettre_rail_vers_chevalet(R_r, joueur, lettre_rail);
+                deplacement_chevalet_rail(R_v, joueur, division);
+                dupliquer_rail_inv(R_v, R_r);
+            }
+            ajout_lettre_chevalet(Adversaire, lettre_rail);
+            suppresion_lettre_joueur(Joueur, joueur);
+            resultat_coup = 1;
         }
-        ajout_lettre_chevalet(Adversaire, lettre_rail);
-        suppresion_lettre_joueur(Joueur, joueur);
-        resultat_coup = 1;
     }
     return resultat_coup;
 }
 
 int coup_joueur_echange_lettre(char *commande, PAQUETS *Joueur, Alphabet *Pioche) {
     int resultat_coup = 0;
-    for (int i = 1; i < taille(&Joueur->lettres); i++) {
+    for (int i = 0; i < taille(&Joueur->lettres); i++) {
         Lettre Le = obtenir(&Joueur->lettres, i);
         if (commande[2] == AfficherLettre(&Le)) {
-            EchangePioche(Pioche, commande[2], &Joueur);
+            EchangePioche(Pioche, commande[2], Joueur);
             resultat_coup++;
             break;
         }
@@ -271,9 +272,7 @@ void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
         lireCommande(commande, sizeof(commande));
         if (commande[0] == 'R' || commande[0] == 'V') {
             char mot[9] = "";
-            coup = (jeu == JOUEUR1
-                        ? coup_joueur_R_V(commande, joueur, joueur_adverse, recto, verso, mot)
-                        : coup_joueur_R_V(commande, joueur_adverse, joueur, recto, verso, mot));
+            coup = coup_joueur_R_V(commande, joueur, joueur_adverse, recto, verso, mot);
             if (strlen(mot) == TAILLEMAXMOT & coup == 1) {
                 if (jeu == JOUEUR1) {
                     afficher_etat_jeu(joueur, joueur_adverse, recto, verso);
@@ -284,13 +283,11 @@ void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
             }
         } else if (commande[0] == '-' && est_dans(joueur, commande[2])) {
             coup = coup_joueur_echange_lettre(commande, joueur, pioche);
-        } else if ((commande[0] == 'r' || commande[0] == 'v')) {
-            //coup si l'autre joueur aurai pu posser un mot de 8 lettres.
-            // posibilité de defause
-            (jeu == JOUEUR1
-                 ? defausse_lettre(jeu, joueur_adverse)
-                 : defausse_lettre(jeu, joueur)
-            );
+        } else if ((commande[0] == 'r' || commande[0] == 'v')&& Drecto->lettres[0] != ',') {
+            char mot[9] = "";
+            coup = coup_joueur_R_V(commande, Djoueur, joueur_adverse, Drecto, Dverso, mot);
+            if (strlen(mot) == TAILLEMAXMOT & coup == 1)
+                defausse_lettre(jeu, joueur_adverse);
         }
     }
 }
