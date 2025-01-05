@@ -8,6 +8,8 @@ enum {
     TAILLEMAXCOMMANDE = 13, /// Nombre maximum de caractère pouvant etre fait dans une commande du jeu.
 };
 
+typedef enum {JOUEUR1 = 1, JOUEUR2}JOUEUR;
+
 typedef enum {NUL,DROITE,GAUCHE}Sens;
 
 int lettre_valide(PAQUETS* joueur, char* mot );
@@ -34,7 +36,7 @@ void sauvegarde_lettre_rail_vers_chevalet(Rail* R, char* mot_joueur, char* lettr
 
 void inverser_chaine_caractere(char* chaine);
 
-int coup_joueur_R_V(char* commande, PAQUETS *Joueur, Rail *R_r, Rail *R_v, char* mot);
+int coup_joueur_R_V(char* commande, PAQUETS *Joueur, PAQUETS* Adversaire, Rail *R_r, Rail *R_v, char* mot);
 
 int coup_joueur_echange_lettre(char* commande, PAQUETS *Joueur, Alphabet* Pioche);
 
@@ -43,3 +45,7 @@ void afficher_etat_jeu(PAQUETS* J1, PAQUETS* J2, Rail* RR, Rail* RV);
 void gererTour(int jeu, PAQUETS* joueur, PAQUETS* joueur_adverse, Rail* recto, Rail* verso, Alphabet* pioche, PAQUETS* Djoueur,Rail* Drecto, Rail* Dverso );
 
 void nettoyerTampon();
+
+void lireCommande(char *commande, size_t taille);
+
+void defausse_lettre(JOUEUR joueur, PAQUETS* Joueur);

@@ -101,11 +101,11 @@ int diviser_droite(char *com, char *rail, char *joueur, char *mot) {
     }
     joueur[taille_joueur] = '\0';
 
-    fusion_mot(mot, rail,joueur , taille_rail, taille_joueur);
+    fusion_mot(mot, rail, joueur, taille_rail, taille_joueur);
     return DROITE;
 }
 
-int appartient_joueur(PAQUETS* J, char* mot_joueur) {
+int appartient_joueur(PAQUETS *J, char *mot_joueur) {
     for (int i = 0; mot_joueur[i] != '\0'; i++) {
         if (est_dans(J, mot_joueur[i]) == 0)
             return 0;
@@ -113,52 +113,62 @@ int appartient_joueur(PAQUETS* J, char* mot_joueur) {
     return 1;
 }
 
-int appartient_dans_ordre_rail(Rail* R, char* mot, Sens sens) {
+int appartient_dans_ordre_rail(Rail *R, char *mot, Sens sens) {
     int i, j;
     int taille_rail = strlen(R->lettres);
     int taille_mot = strlen(mot);
 
     if (sens == GAUCHE) {
         for (i = 0; i <= taille_rail - taille_mot; i++) {
-            for (j = 0; j <= taille_mot; j++) {
-                if (strncmp(R->lettres + i, mot, j) == 0) {
-                    return 1;
+            int trouve = 1;
+            for (j = 0; j < taille_mot; j++) {
+                if (R->lettres[i + j] != mot[j]) {
+                    trouve = 0;
+                    break;
                 }
+            }
+            if (trouve) {
+                return 1;
             }
         }
     }
 
     if (sens == DROITE) {
         for (i = taille_rail - 1; i >= taille_mot - 1; i--) {
-            for (j = 0; j <= taille_mot; j++) {
-                if (strncmp(R->lettres + i - j, mot, j) == 0) {
-                    return 1;
+            int trouve = 1;
+            for (j = 0; j < taille_mot; j++) {
+                if (R->lettres[i - j] != mot[taille_mot - 1 - j]) {
+                    trouve = 0;
+                    break;
                 }
+            }
+            if (trouve) {
+                return 1;
             }
         }
     }
-    printf("le rail est dans l'ordre\n");
-    return 0;
+
+    return 0; // Mot non trouvé
 }
 
-void supppresion_chevalets_rail(PAQUETS* J1, char* j1, PAQUETS* J2, char* j2) {
+void supppresion_chevalets_rail(PAQUETS *J1, char *j1, PAQUETS *J2, char *j2) {
     for (int i = 0; j1[i] != '\0'; i++)
         MoinsPaquet(J1, j1[i]);
     for (int i = 0; j2[i] != '\0'; i++)
         MoinsPaquet(J2, j2[i]);
 }
 
-void ajout_lettre_chevalet(PAQUETS* Joueur, char* lettre_rail) {
+void ajout_lettre_chevalet(PAQUETS *Joueur, char *lettre_rail) {
     for (int i = 0; lettre_rail[i] != '\0'; i++)
         PlusPaquet(Joueur, lettre_rail[i]);
 }
 
-void sauvegarde_lettre_rail_vers_chevalet(Rail* R, char* mot_joueur, char* lettre_rail) {
+void sauvegarde_lettre_rail_vers_chevalet(Rail *R, char *mot_joueur, char *lettre_rail) {
     for (int i = 0; mot_joueur[i] != '\0'; i++)
         lettre_rail[i] = R->lettres[i];
 }
 
-void deplacement_chevalet_rail(Rail* R, char* mot_joueur, Sens div) {
+void deplacement_chevalet_rail(Rail *R, char *mot_joueur, Sens div) {
     if (div == DROITE) {
         inverser_chaine_caractere(mot_joueur);
     }
@@ -169,12 +179,12 @@ void deplacement_chevalet_rail(Rail* R, char* mot_joueur, Sens div) {
     }
 }
 
-void suppresion_lettre_joueur(PAQUETS* J, char* mot_joueur) {
+void suppresion_lettre_joueur(PAQUETS *J, char *mot_joueur) {
     for (int i = 0; mot_joueur[i] != '\0'; i++)
         MoinsPaquet(J, mot_joueur[i]);
 }
 
-void inverser_chaine_caractere(char* chaine) {
+void inverser_chaine_caractere(char *chaine) {
     int longueur = strlen(chaine);
     int i, j;
     char temp;
@@ -186,26 +196,26 @@ void inverser_chaine_caractere(char* chaine) {
     }
 }
 
-int coup_joueur_R_V(char* commande, PAQUETS *Joueur, Rail *R_r, Rail *R_v, char* mot) {
+int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *R_r, Rail *R_v, char *mot) {
     int resultat_coup = 0;
     Sens division = NUL;
     char rail[8] = "", joueur[7] = "";
     division = (commande[2] == '(')
                    ? diviser_droite(commande, rail, joueur, mot)
                    : diviser_gauche(commande, rail, joueur, mot);
+    printf("commande : %s, rail : %s, joueur : %s, mot : %s, division ->%d", commande, rail, joueur, mot, division);
     if (division != NUL) {
         if (commande[0] == 'R' && appartient_joueur(Joueur, joueur) &&
             appartient_dans_ordre_rail(R_r, rail, division)
-                /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
+            /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
             ecrire_dans(MOTJOUER, mot);
         } else if (commande[0] == 'V' && appartient_joueur(Joueur, joueur) &&
                    appartient_dans_ordre_rail(R_v, rail, division)
-                   /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
+            /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
             ecrire_dans(MOTJOUER, mot);
         } else {
             return resultat_coup;
         }
-
 
         char lettre_rail[TAILLEMAXMOT] = "";
         strcpy(lettre_rail, joueur);
@@ -219,15 +229,14 @@ int coup_joueur_R_V(char* commande, PAQUETS *Joueur, Rail *R_r, Rail *R_v, char*
             deplacement_chevalet_rail(R_v, joueur, division);
             dupliquer_rail_inv(R_v, R_r);
         }
-        ajout_lettre_chevalet(Joueur, lettre_rail);
+        ajout_lettre_chevalet(Adversaire, lettre_rail);
         suppresion_lettre_joueur(Joueur, joueur);
         resultat_coup = 1;
-
     }
     return resultat_coup;
 }
 
-int coup_joueur_echange_lettre(char* commande, PAQUETS *Joueur, Alphabet* Pioche) {
+int coup_joueur_echange_lettre(char *commande, PAQUETS *Joueur, Alphabet *Pioche) {
     int resultat_coup = 0;
     for (int i = 1; i < taille(&Joueur->lettres); i++) {
         Lettre Le = obtenir(&Joueur->lettres, i);
@@ -240,7 +249,7 @@ int coup_joueur_echange_lettre(char* commande, PAQUETS *Joueur, Alphabet* Pioche
     return resultat_coup;
 }
 
-void afficher_etat_jeu(PAQUETS* J1, PAQUETS* J2, Rail* RR, Rail* RV) {
+void afficher_etat_jeu(PAQUETS *J1, PAQUETS *J2, Rail *RR, Rail *RV) {
     printf("1 : ");
     AfficherPaquettrier(J1);
     printf("2 : ");
@@ -251,39 +260,37 @@ void afficher_etat_jeu(PAQUETS* J1, PAQUETS* J2, Rail* RR, Rail* RV) {
     AfficherRails(RV);
 }
 
-void gererTour(int jeu, PAQUETS* joueur, PAQUETS* joueur_adverse,
-    Rail* recto, Rail* verso, Alphabet* pioche,
-    PAQUETS* Djoueur,Rail* Drecto, Rail* Dverso ) {
+void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
+               Rail *recto, Rail *verso, Alphabet *pioche,
+               PAQUETS *Djoueur, Rail *Drecto, Rail *Dverso) {
     char commande[TAILLEMAXCOMMANDE];
-    int coup = 0, defause = 0;
+    int coup = 0;
 
     while (!coup) {
-        if (defause) {
-            afficher_etat_jeu(joueur, joueur_adverse, recto, verso);
-            printf("-%d >", jeu);
-            fgets(commande, sizeof(commande), stdin);
-            commande[strcspn(commande, "\n")] = '\0';
-            nettoyerTampon();
-            MoinsPaquet(joueur, commande[0]);
-            (defause)--;
-            coup--;
-            continue;
-        }
         printf("%d >", jeu);
-        fgets(commande, sizeof(commande), stdin);
-        commande[strcspn(commande, "\n")] = '\0';
-        nettoyerTampon();
-
+        lireCommande(commande, sizeof(commande));
         if (commande[0] == 'R' || commande[0] == 'V') {
             char mot[9] = "";
-            coup = coup_joueur_R_V(commande, joueur, recto, verso, mot);
-            if (strlen(mot) == 8 && coup == 1)
-                (defause)++;
+            coup = (jeu == JOUEUR1
+                        ? coup_joueur_R_V(commande, joueur, joueur_adverse, recto, verso, mot)
+                        : coup_joueur_R_V(commande, joueur_adverse, joueur, recto, verso, mot));
+            if (strlen(mot) == TAILLEMAXMOT & coup == 1) {
+                if (jeu == JOUEUR1) {
+                    afficher_etat_jeu(joueur, joueur_adverse, recto, verso);
+                } else {
+                    afficher_etat_jeu(joueur_adverse, joueur, recto, verso);
+                }
+                defausse_lettre(jeu, joueur);
+            }
         } else if (commande[0] == '-' && est_dans(joueur, commande[2])) {
             coup = coup_joueur_echange_lettre(commande, joueur, pioche);
         } else if ((commande[0] == 'r' || commande[0] == 'v')) {
             //coup si l'autre joueur aurai pu posser un mot de 8 lettres.
             // posibilité de defause
+            (jeu == JOUEUR1
+                 ? defausse_lettre(jeu, joueur_adverse)
+                 : defausse_lettre(jeu, joueur)
+            );
         }
     }
 }
@@ -291,5 +298,24 @@ void gererTour(int jeu, PAQUETS* joueur, PAQUETS* joueur_adverse,
 void nettoyerTampon() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF) {
+    }
+}
+
+void lireCommande(char *commande, size_t taille) {
+    if (fgets(commande, taille, stdin) != NULL) {
+        commande[strcspn(commande, "\n")] = '\0'; // Supprime le '\n' s'il existe
+    } else {
+        commande[0] = '\0'; // Vide la chaîne en cas d'erreur
+    }
+    nettoyerTampon(); // Nettoie le tampon
+}
+
+void defausse_lettre(JOUEUR joueur, PAQUETS *Joueur) {
+    char commande[TAILLEMAXCOMMANDE] = ",";
+    AfficherPaquettrier(Joueur);
+    while (est_dans(Joueur, commande[0]) == 0) {
+        printf("-%d >", joueur);
+        lireCommande(commande, sizeof(commande));
+        MoinsPaquet(Joueur, commande[0]);
     }
 }

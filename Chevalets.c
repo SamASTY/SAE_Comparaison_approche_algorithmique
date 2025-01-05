@@ -60,7 +60,19 @@ void AfficherPaquettrier(PAQUETS* paquet) {
 int comparerLettre(const void* a, const void* b) {
     const Lettre* lettreA = (const Lettre*)a;
     const Lettre* lettreB = (const Lettre*)b;
-    return AfficherLettre(lettreA) - AfficherLettre(lettreB);
+
+    // Récupérer les caractères via AfficherLettre
+    char charA = AfficherLettre((Lettre*)lettreA);
+    char charB = AfficherLettre((Lettre*)lettreB);
+
+    // Comparer les caractères (par leurs valeurs ASCII)
+    if (charA < charB) {
+        return -1; // lettreA est avant lettreB
+    } else if (charA > charB) {
+        return 1; // lettreA est après lettreB
+    } else {
+        return 0; // lettreA est égal à lettreB
+    }
 }
 
 void EchangePioche(Alphabet* Alpha, char L, PAQUETS* J) {

@@ -68,7 +68,7 @@ int main() {
         InitRail(&R_doublons_V, init_doublons, init_doublons);
         int partie_principale_jeu = 0;
         int defause1 = 0, defause2 = 0;
-        int joueur = 1;
+        int joueur = JOUEUR1;
         while (!partie_principale_jeu) {
             afficher_etat_jeu(&Joueur1, &Joueur2, &R_recto, &R_verso);
 
@@ -77,14 +77,14 @@ int main() {
             inverser_rail(&R_recto, &R_doublons_V);
             inverser_rail(&R_verso, &R_doublons_R);
 
-            (joueur == 1
+            (joueur == JOUEUR1
                  ? (gererTour(joueur, &Joueur1, &Joueur2, &R_recto, &R_verso, &Pioche, &Doublons_J2, &R_doublons_R,
                               &R_doublons_V))
                  : (gererTour(joueur, &Joueur2, &Joueur1, &R_recto, &R_verso, &Pioche, &Doublons_J1, &R_doublons_R,
                               &R_doublons_V)
                  )
             );
-            (joueur == 1 ? (joueur = 2) : (joueur = 1));
+            (joueur == JOUEUR1 ? (joueur = JOUEUR2) : (joueur = JOUEUR1));
         }
     }
 }
