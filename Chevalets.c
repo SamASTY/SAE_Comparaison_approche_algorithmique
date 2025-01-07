@@ -121,3 +121,11 @@ void PlusPaquet(PAQUETS *P, char L) {
 void LibererPaquets(PAQUETS* P) {
     detruireVecteur(&P->lettres);
 }
+
+int EstVide(PAQUETS* P) {
+    return (taille(&P->lettres) == 0);
+}
+
+int NbRestant(PAQUETS* P) {
+    return taille(&P->lettres);
+}

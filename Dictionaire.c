@@ -1,13 +1,11 @@
-#include <ctype.h>
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 
 #include "Dictionaire.h"
 
-#include <assert.h>
-#include <stdlib.h>
 
-#include "Chevalets.h"
+
 
 #define TAILLEMAXMOT 100
 

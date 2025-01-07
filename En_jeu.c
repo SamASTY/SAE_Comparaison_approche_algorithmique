@@ -1,16 +1,15 @@
-#include "Rail.h"
 #include <assert.h>
 #include <ctype.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 
-#include "Rail.h"
 #include "Chevalets.h"
 #include "Alphabet.h"
-#include "Rail.h"
 #include "Dictionaire.h"
 #include"En_jeu.h"
+#include "Rail.h"
+
 
 int lettre_valide(PAQUETS *joueur, char *mot) {
     PAQUETS Joueurdup;
@@ -204,18 +203,18 @@ int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *
                    ? diviser_droite(commande, rail, joueur, mot)
                    : diviser_gauche(commande, rail, joueur, mot);
     if (division != NUL) {
-        if (commande[0] == 'R' && appartient_joueur(Joueur, joueur) &&
+        if ((commande[0] == 'R' || commande[0] == 'r') && appartient_joueur(Joueur, joueur) &&
             appartient_dans_ordre_rail(R_r, rail, division)
             /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
             ecrire_dans(MOTJOUER, mot);
-        } else if (commande[0] == 'V' && appartient_joueur(Joueur, joueur) &&
+        } else if ((commande[0] == 'V' || commande[0] == 'v') && appartient_joueur(Joueur, joueur) &&
                    appartient_dans_ordre_rail(R_v, rail, division)
             /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
             ecrire_dans(MOTJOUER, mot);
         } else {
             return resultat_coup;
         }
-
+        resultat_coup = 1;
         if (commande[0] == 'R' || commande[0] == 'V') {
             char lettre_rail[TAILLEMAXMOT] = "";
             strcpy(lettre_rail, joueur);
@@ -231,7 +230,6 @@ int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *
             }
             ajout_lettre_chevalet(Adversaire, lettre_rail);
             suppresion_lettre_joueur(Joueur, joueur);
-            resultat_coup = 1;
         }
     }
     return resultat_coup;
@@ -263,7 +261,7 @@ void afficher_etat_jeu(PAQUETS *J1, PAQUETS *J2, Rail *RR, Rail *RV) {
 
 void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
                Rail *recto, Rail *verso, Alphabet *pioche,
-               PAQUETS *Djoueur, Rail *Drecto, Rail *Dverso) {
+               PAQUETS *Djoueur_adverse, Rail *Drecto, Rail *Dverso) {
     char commande[TAILLEMAXCOMMANDE];
     int coup = 0;
 
@@ -273,7 +271,7 @@ void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
         if (commande[0] == 'R' || commande[0] == 'V') {
             char mot[9] = "";
             coup = coup_joueur_R_V(commande, joueur, joueur_adverse, recto, verso, mot);
-            if (strlen(mot) == TAILLEMAXMOT & coup == 1) {
+            if (strlen(mot) == TAILLEMAXMOT & coup == 1 && NbRestant(joueur) > 0) {
                 if (jeu == JOUEUR1) {
                     afficher_etat_jeu(joueur, joueur_adverse, recto, verso);
                 } else {
@@ -285,9 +283,9 @@ void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
             coup = coup_joueur_echange_lettre(commande, joueur, pioche);
         } else if ((commande[0] == 'r' || commande[0] == 'v')&& Drecto->lettres[0] != ',') {
             char mot[9] = "";
-            coup = coup_joueur_R_V(commande, Djoueur, joueur_adverse, Drecto, Dverso, mot);
-            if (strlen(mot) == TAILLEMAXMOT & coup == 1)
-                defausse_lettre(jeu, joueur_adverse);
+            coup = coup_joueur_R_V(commande, Djoueur_adverse, joueur, Drecto, Dverso, mot);
+            if (strlen(mot) == TAILLEMAXMOT && coup == 1)
+                defausse_lettre(jeu, joueur);
         }
     }
 }
@@ -313,6 +311,25 @@ void defausse_lettre(JOUEUR joueur, PAQUETS *Joueur) {
     while (est_dans(Joueur, commande[0]) == 0) {
         printf("-%d >", joueur);
         lireCommande(commande, sizeof(commande));
-        MoinsPaquet(Joueur, commande[0]);
     }
+    MoinsPaquet(Joueur, commande[0]);
+}
+
+void gestion_sauvegarde(PAQUETS *Joueur1, PAQUETS *Joueur2, Rail *R_recto, Rail *R_verso,
+                        PAQUETS *Sauv_J1_n1, PAQUETS *Sauv_J1_n2, PAQUETS *Sauv_J2_n1, PAQUETS *Sauv_J2_n2,
+                        Rail *Sauv_RR_n1, Rail *Sauv_RV_n1, Rail *Sauv_RR_n2, Rail *Sauv_RV_n2) {
+    DupliquerPaquet(Sauv_J1_n1, Sauv_J1_n2);
+    DupliquerPaquet(Sauv_J2_n1, Sauv_J2_n2);
+    inverser_rail(Sauv_RR_n1, Sauv_RV_n2);
+    inverser_rail(Sauv_RV_n1, Sauv_RR_n2);
+
+    DupliquerPaquet(Joueur1, Sauv_J1_n1);
+    DupliquerPaquet(Joueur2, Sauv_J2_n1);
+    inverser_rail(R_recto, Sauv_RV_n1);
+    inverser_rail(R_verso, Sauv_RR_n1);
+}
+
+
+int jeu_fini(PAQUETS* J1, PAQUETS* J2 ) {
+    return(EstVide(J1) || EstVide(J2));
 }

@@ -50,3 +50,7 @@ void MoinsPaquet(PAQUETS *P, char L);
 void PlusPaquet(PAQUETS *P, char L);
 
 void LibererPaquets(PAQUETS* P);
+
+int EstVide(PAQUETS* P);
+
+int NbRestant(PAQUETS* P);

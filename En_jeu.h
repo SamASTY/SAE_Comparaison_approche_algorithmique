@@ -49,3 +49,9 @@ void nettoyerTampon();
 void lireCommande(char *commande, size_t taille);
 
 void defausse_lettre(JOUEUR joueur, PAQUETS* Joueur);
+
+void gestion_sauvegarde(PAQUETS *Joueur1, PAQUETS *Joueur2, Rail *R_recto, Rail *R_verso,
+                        PAQUETS *Sauv_J1_n1, PAQUETS *Sauv_J1_n2, PAQUETS *Sauv_J2_n1, PAQUETS *Sauv_J2_n2,
+                        Rail *Sauv_RR_n1, Rail *Sauv_RV_n1, Rail *Sauv_RR_n2, Rail *Sauv_RV_n2);
+
+int jeu_fini(PAQUETS* J1, PAQUETS* J2 );

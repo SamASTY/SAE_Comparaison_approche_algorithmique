@@ -1,6 +1,5 @@
 #pragma once
-#include "Chevalets.h"
-#include "Alphabet.h"
+
 
 const enum {
     TAILLERAIL = 8, ///< Nombre de lettre maximale pouvant se trouver sur le rail.
