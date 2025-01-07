@@ -11,7 +11,7 @@
 #include "Rail.h"
 
 
-int lettre_valide(PAQUETS *joueur, char *mot) {
+int lettre_valide(const PAQUETS *joueur, char *mot) {
     PAQUETS Joueurdup;
     DupliquerPaquet(joueur, &Joueurdup);
     for (int i = 0; mot[i] != '\0'; i++) {
@@ -27,7 +27,7 @@ int lettre_valide(PAQUETS *joueur, char *mot) {
     return 1;
 }
 
-void fusion_mot(char *mot, char *p1, char *p2, int taille_p1, int taille_p2) {
+void fusion_mot(char *mot, const char *p1, const char *p2, int taille_p1, int taille_p2) {
     int it = 0;
     for (int m = 0; m < taille_p1; m++) {
         mot[it] = p1[m];
@@ -40,7 +40,7 @@ void fusion_mot(char *mot, char *p1, char *p2, int taille_p1, int taille_p2) {
     mot[it] = '\0';
 }
 
-int diviser_gauche(char *com, char *rail, char *joueur, char *mot) {
+Sens diviser_gauche(const char *com, char *rail, char *joueur, char *mot) {
     int taille_rail = 0, taille_joueur = 0;
     int i = 2;
 
@@ -73,7 +73,7 @@ int diviser_gauche(char *com, char *rail, char *joueur, char *mot) {
     return GAUCHE;
 }
 
-int diviser_droite(char *com, char *rail, char *joueur, char *mot) {
+Sens diviser_droite(const char *com, char *rail, char *joueur, char *mot) {
     int taille_rail = 0, taille_joueur = 0;
     int i = 2;
     if (com[i] != '(')
@@ -104,7 +104,7 @@ int diviser_droite(char *com, char *rail, char *joueur, char *mot) {
     return DROITE;
 }
 
-int appartient_joueur(PAQUETS *J, char *mot_joueur) {
+int appartient_joueur(const PAQUETS *J, char *mot_joueur) {
     for (int i = 0; mot_joueur[i] != '\0'; i++) {
         if (est_dans(J, mot_joueur[i]) == 0)
             return 0;
@@ -112,79 +112,61 @@ int appartient_joueur(PAQUETS *J, char *mot_joueur) {
     return 1;
 }
 
-int appartient_dans_ordre_rail(Rail *R, char *mot, Sens sens) {
-    int i, j;
-    int taille_rail = strlen(R->lettres);
+int appartient_dans_ordre_rail(const Rail *R, const char *mot, const Sens sens) { //probleme de la validation
     int taille_mot = strlen(mot);
 
+    if (taille_mot > TAILLERAIL)
+        return 0;
     if (sens == GAUCHE) {
-        for (i = 0; i <= taille_rail - taille_mot; i++) {
-            int trouve = 1;
-            for (j = 0; j < taille_mot; j++) {
-                if (R->lettres[i + j] != mot[j]) {
-                    trouve = 0;
-                    break;
-                }
-            }
-            if (trouve) {
-                return 1;
-            }
+        for (int i = 0; i<taille_mot; i++) {
+            if (mot[i] != R->lettres[i])
+                return 0;
         }
     }
-
     if (sens == DROITE) {
-        for (i = taille_rail - 1; i >= taille_mot - 1; i--) {
-            int trouve = 1;
-            for (j = 0; j < taille_mot; j++) {
-                if (R->lettres[i - j] != mot[taille_mot - 1 - j]) {
-                    trouve = 0;
-                    break;
-                }
-            }
-            if (trouve) {
-                return 1;
-            }
+        for (int i = taille_mot-1, j = TAILLERAIL-1; i > 0; j--, i--) {
+            if (mot[i] != R->lettres[j])
+                return 0;
         }
     }
-
-    return 0; // Mot non trouvé
+    return 1;
 }
 
-void supppresion_chevalets_rail(PAQUETS *J1, char *j1, PAQUETS *J2, char *j2) {
+void suppression_chevalets_rail(PAQUETS *J1, const char *j1, PAQUETS *J2, const char *j2) {
     for (int i = 0; j1[i] != '\0'; i++)
         MoinsPaquet(J1, j1[i]);
     for (int i = 0; j2[i] != '\0'; i++)
         MoinsPaquet(J2, j2[i]);
 }
 
-void ajout_lettre_chevalet(PAQUETS *Joueur, char *lettre_rail) {
+void ajout_lettre_chevalet(PAQUETS *Joueur, const char *lettre_rail) {
     for (int i = 0; lettre_rail[i] != '\0'; i++)
         PlusPaquet(Joueur, lettre_rail[i]);
 }
 
-void sauvegarde_lettre_rail_vers_chevalet(Rail *R, char *mot_joueur, char *lettre_rail) {
+void sauvegarde_lettre_rail_vers_chevalet(const Rail *R, const char *mot_joueur, char *lettre_rail) {
     for (int i = 0; mot_joueur[i] != '\0'; i++)
         lettre_rail[i] = R->lettres[i];
 }
 
-void deplacement_chevalet_rail(Rail *R, char *mot_joueur, Sens div) {
+void deplacement_chevalet_rail(Rail *R, char *mot_joueur, const Sens div) {
     if (div == DROITE) {
         inverser_chaine_caractere(mot_joueur);
     }
-    int a_decaler = strlen(mot_joueur);
+    int a_decaler = (int)strlen(mot_joueur);
     Decalage(R, a_decaler);
     for (int i = 0; mot_joueur[i] != '\0'; i++) {
         R->lettres[i] = mot_joueur[i];
     }
 }
 
-void suppresion_lettre_joueur(PAQUETS *J, char *mot_joueur) {
+void suppression_lettre_joueur(PAQUETS *J, const char *mot_joueur) {
     for (int i = 0; mot_joueur[i] != '\0'; i++)
         MoinsPaquet(J, mot_joueur[i]);
 }
 
 void inverser_chaine_caractere(char *chaine) {
-    int longueur = strlen(chaine);
+    int longueur = (int)strlen(chaine);
     int i, j;
     char temp;
 
@@ -195,7 +177,7 @@ void inverser_chaine_caractere(char *chaine) {
     }
 }
 
-int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *R_r, Rail *R_v, char *mot) {
+int coup_joueur_R_V(const char *commande, PAQUETS *Joueur, const PAQUETS *Adversaire, Rail *R_r, Rail *R_v, char *mot) {
     int resultat_coup = 0;
     Sens division = NUL;
     char rail[8] = "", joueur[7] = "";
@@ -205,12 +187,12 @@ int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *
     if (division != NUL) {
         if ((commande[0] == 'R' || commande[0] == 'r') && appartient_joueur(Joueur, joueur) &&
             appartient_dans_ordre_rail(R_r, rail, division)
-            /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
-            ecrire_dans(MOTJOUER, mot);
+            /*&& est_dans_dico(DICTIONAIRE, mot) == 1 && est_dans_dico(MOTJOUE, mot) == 0*/) {
+            ecrire_dans(MOTJOUE, mot);
         } else if ((commande[0] == 'V' || commande[0] == 'v') && appartient_joueur(Joueur, joueur) &&
                    appartient_dans_ordre_rail(R_v, rail, division)
-            /*&& est_dans_dico(DICTIONAIRES, mot) == 1 && est_dans_dico(MOTJOUER, mot) == 0*/) {
-            ecrire_dans(MOTJOUER, mot);
+            /*&& est_dans_dico(DICTIONAIRE, mot) == 1 && est_dans_dico(MOTJOUE, mot) == 0*/) {
+            ecrire_dans(MOTJOUE, mot);
         } else {
             return resultat_coup;
         }
@@ -229,13 +211,13 @@ int coup_joueur_R_V(char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, Rail *
                 dupliquer_rail_inv(R_v, R_r);
             }
             ajout_lettre_chevalet(Adversaire, lettre_rail);
-            suppresion_lettre_joueur(Joueur, joueur);
+            suppression_lettre_joueur(Joueur, joueur);
         }
     }
     return resultat_coup;
 }
 
-int coup_joueur_echange_lettre(char *commande, PAQUETS *Joueur, Alphabet *Pioche) {
+int coup_joueur_echange_lettre(const char *commande, PAQUETS *Joueur, Alphabet *Pioche) {
     int resultat_coup = 0;
     for (int i = 0; i < taille(&Joueur->lettres); i++) {
         Lettre Le = obtenir(&Joueur->lettres, i);
@@ -248,11 +230,11 @@ int coup_joueur_echange_lettre(char *commande, PAQUETS *Joueur, Alphabet *Pioche
     return resultat_coup;
 }
 
-void afficher_etat_jeu(PAQUETS *J1, PAQUETS *J2, Rail *RR, Rail *RV) {
+void afficher_etat_jeu(const PAQUETS *J1, const PAQUETS *J2, const Rail *RR, const Rail *RV) {
     printf("1 : ");
-    AfficherPaquettrier(J1);
+    AfficherPaquetTrie(J1);
     printf("2 : ");
-    AfficherPaquettrier(J2);
+    AfficherPaquetTrie(J2);
     printf("R : ");
     AfficherRails(RR);
     printf("V : ");
@@ -296,7 +278,7 @@ void nettoyerTampon() {
     }
 }
 
-void lireCommande(char *commande, size_t taille) {
+void lireCommande(char *commande, const size_t taille) {
     if (fgets(commande, taille, stdin) != NULL) {
         commande[strcspn(commande, "\n")] = '\0'; // Supprime le '\n' s'il existe
     } else {
@@ -305,9 +287,8 @@ void lireCommande(char *commande, size_t taille) {
     nettoyerTampon(); // Nettoie le tampon
 }
 
-void defausse_lettre(JOUEUR joueur, PAQUETS *Joueur) {
+void defausse_lettre(const JOUEUR joueur, PAQUETS *Joueur) {
     char commande[TAILLEMAXCOMMANDE] = ",";
-    AfficherPaquettrier(Joueur);
     while (est_dans(Joueur, commande[0]) == 0) {
         printf("-%d >", joueur);
         lireCommande(commande, sizeof(commande));
@@ -330,6 +311,6 @@ void gestion_sauvegarde(PAQUETS *Joueur1, PAQUETS *Joueur2, Rail *R_recto, Rail 
 }
 
 
-int jeu_fini(PAQUETS* J1, PAQUETS* J2 ) {
+int jeu_fini(const PAQUETS* J1, const PAQUETS* J2 ) {
     return(EstVide(J1) || EstVide(J2));
 }

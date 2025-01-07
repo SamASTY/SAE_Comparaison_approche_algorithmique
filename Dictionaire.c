@@ -9,9 +9,9 @@
 
 #define TAILLEMAXMOT 100
 
-const char *DICTIONAIRES = "ods4.txt";
+const char *DICTIONAIRE = "ods4.txt";
 
-const char *MOTJOUER = "MotDejaJouer.txt";
+const char *MOTJOUE = "MotDejaJouer.txt";
 
 int est_dans_dico(const char *dico_file, const char *word) {
     FILE *file = fopen(dico_file, "r");
@@ -61,7 +61,7 @@ void afficher_fichier(const char *fichier) {
     fclose(file);
 }
 
-void ecrire_dans(const char *fichier, char* mot) {
+void ecrire_dans(const char *fichier, const char* mot) {
     FILE *file = fopen(fichier, "a");
     if (file == NULL) {
         perror("Erreur lors de l'ouverture du fichier");
@@ -71,7 +71,7 @@ void ecrire_dans(const char *fichier, char* mot) {
     fclose(file);
 }
 
-void effaser_fichier(const char *fichier) {
+void effacer_fichier(const char *fichier) {
     FILE *file = fopen(fichier, "w"); // Ouvre le fichier en mode écriture pour l'effacer
     if (file == NULL) {
         perror("Erreur lors de l'ouverture du fichier");

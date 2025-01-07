@@ -1,10 +1,8 @@
 #include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
 
 #include "Alphabet.h"
 
-const int letter_count[NBLETTRESALPHABETH] = { ///< Definition du nombre d'apparition de chaque lettre au debut du jeu sous forme de constante
+const int letter_count[NBLETTRESALPHABET] = { ///< Definition du nombre d'apparition de chaque lettre au debut du jeu sous forme de constante
     9,  // A
     1,  // B
     2,  // C
@@ -28,16 +26,16 @@ const int letter_count[NBLETTRESALPHABETH] = { ///< Definition du nombre d'appar
     2   // V
 };
 
-void InitLettres(Lettre* L, char lettre) {
+void InitLettres(Lettre* L, const char lettre) {
     L->Lettre[0] = lettre;
     L->Lettre[TAILLEDUNLETTRE-1] = '\0';
 }
 
-void InitAlphabeth(Alphabet* Alpha) {
+void InitAlphabet(Alphabet* Alpha) {
     initVecteur(&Alpha->lettres, NBLETTRESTOTAL);
     int i = 0;
     char j = 'A';
-    while (j <= 'V' && i < NBLETTRESALPHABETH) {
+    while (j <= 'V' && i < NBLETTRESALPHABET) {
         if (j == 'K') {
             // Ignorer 'K'
             j++;
@@ -53,7 +51,7 @@ void InitAlphabeth(Alphabet* Alpha) {
     }
 }
 
-void AfficherAlphabethCount(Alphabet* Alpha) {
+void AfficherAlphabetCount(const Alphabet* Alpha) {
     char j = 'A';
     int i = 0;
     while (j<= 'V' && i < NBLETTRESTOTAL+1) {
@@ -67,7 +65,7 @@ void AfficherAlphabethCount(Alphabet* Alpha) {
     }
 }
 
-void AfficherAlphabeth(Alphabet* Alpha) {
+void AfficherAlphabet(Alphabet* Alpha) {
     for (int i = 0; i < taille(&Alpha->lettres); i++) {
         Lettre La = obtenir(&Alpha->lettres, i);
         printf("%c\n",AfficherLettre(&La));
@@ -79,7 +77,7 @@ int NbLettreRestantAlphabet(const Alphabet* Alpha) {
     return Alpha->lettres.nbElements;
 }
 
-char AfficherLettre(Lettre* L) {
+char AfficherLettre(const Lettre* L) {
     return L->Lettre[0];
 }
 

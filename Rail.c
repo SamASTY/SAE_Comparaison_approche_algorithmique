@@ -5,7 +5,7 @@
 #include "Rail.h"
 
 
-void InitRail(Rail *rail, char mot1[NBMAXLETTRES], char mot2[NBMAXLETTRES]) {
+void InitRail(Rail *rail, const char mot1[NBMAXLETTRES], const char mot2[NBMAXLETTRES]) {
     int compteur = 0;
     for (int i = 0; i < NBMAXLETTRES; i++) {
         rail->lettres[compteur] = mot1[i];
@@ -17,14 +17,14 @@ void InitRail(Rail *rail, char mot1[NBMAXLETTRES], char mot2[NBMAXLETTRES]) {
     }
 }
 
-void AfficherRails(Rail *R) {
+void AfficherRails(const Rail *R) {
     for (int i = 0; i < TAILLERAIL; i++) {
-        printf("%c,", R->lettres[i]);
+        printf("%c", R->lettres[i]);
     }
     printf("\n");
 }
 
-int est_dans_rail(Rail *R, const char L) {
+int est_dans_rail(const Rail *R, const char L) {
     for (int i = 0; i < strlen(R->lettres); i++) {
         if (L == R->lettres[i])
             return 1;
@@ -32,9 +32,9 @@ int est_dans_rail(Rail *R, const char L) {
     return 0;
 }
 
-void inverser_rail(Rail *dans_ordre, Rail *inverser) {
+void inverser_rail(const Rail *dans_ordre, Rail *inverse) {
     for (int i = 0; i < TAILLERAIL; i++) {
-        inverser->lettres[TAILLERAIL - i - 1] = dans_ordre->lettres[i];
+        inverse->lettres[TAILLERAIL - i - 1] = dans_ordre->lettres[i];
     }
 }
 
@@ -47,7 +47,7 @@ void Decalage(Rail *R, int nombredefoie) {
     }
 }
 
-void dupliquer_rail_inv(Rail* source, Rail* dest) {
+void dupliquer_rail_inv(const Rail* source, Rail* dest) {
     for (int i = 0, j = TAILLERAIL-1; i < TAILLERAIL; i++, j--)
         dest->lettres[i] = source->lettres[j];
 }

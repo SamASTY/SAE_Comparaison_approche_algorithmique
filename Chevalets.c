@@ -1,6 +1,5 @@
 #include <ctype.h>
 #include <stdio.h>
-#include <string.h>
 #include <stdlib.h>
 
 #include "Vecteur.h"
@@ -48,11 +47,11 @@ void InitPartiedejfait(PAQUETS* joueur1, PAQUETS* joueur2) {
     }
 }
 
-void AfficherPaquettrier(PAQUETS* paquet) {
+void AfficherPaquetTrie(const PAQUETS* paquet) {
     qsort(paquet->lettres.elements, taille(&paquet->lettres), sizeof(Lettre), comparerLettre);
     for (int i = 0; i < taille(&paquet->lettres); i++) {
         Lettre La = obtenir(&paquet->lettres, i);
-        printf("%c,",AfficherLettre(&La));
+        printf("%c",AfficherLettre(&La));
     }
     printf("\n");
 }
@@ -122,10 +121,10 @@ void LibererPaquets(PAQUETS* P) {
     detruireVecteur(&P->lettres);
 }
 
-int EstVide(PAQUETS* P) {
+int EstVide(const PAQUETS* P) {
     return (taille(&P->lettres) == 0);
 }
 
-int NbRestant(PAQUETS* P) {
+int NbRestant(const PAQUETS* P) {
     return taille(&P->lettres);
 }
