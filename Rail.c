@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <string.h>
 
-
 #include "Rail.h"
 
 
@@ -38,12 +37,12 @@ void inverser_rail(const Rail *dans_ordre, Rail *inverse) {
     }
 }
 
-void Decalage(Rail *R, int nombredefoie) {
-    while (nombredefoie > 0) {
+void Decalage(Rail *R, int nombredefois) {
+    while (nombredefois > 0) {
         for (int i = TAILLERAIL-1; i > 0; i--) {
             R->lettres[i] = R->lettres[i - 1];
         }
-        --nombredefoie;
+        --nombredefois;
     }
 }
 

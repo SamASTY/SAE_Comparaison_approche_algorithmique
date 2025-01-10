@@ -56,7 +56,7 @@ Lettre obtenir(const Vecteur* v, int i);
  * @pre La valeur de <code>i</code> doit  tre comprise entre 0 et
  * <code>(taille(v) - 1)</code> (inclus).
  */
-void modifier(Vecteur* v, int i, Lettre it);
+//void modifier(Vecteur* v, int i, ItemV it);
 
 /**
  * @brief Supprime un  élément d'un vecteur.

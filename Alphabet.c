@@ -65,7 +65,7 @@ void AfficherAlphabetCount(const Alphabet* Alpha) {
     }
 }
 
-void AfficherAlphabet(Alphabet* Alpha) {
+void AfficherAlphabet(const Alphabet* Alpha) {
     for (int i = 0; i < taille(&Alpha->lettres); i++) {
         Lettre La = obtenir(&Alpha->lettres, i);
         printf("%c\n",AfficherLettre(&La));
@@ -121,7 +121,7 @@ void PlusAlpha(Alphabet *Alpha, char L) {
     ajouter(&Alpha->lettres, lettre);
 }
 
-void LibererAlphabeth(Alphabet* Alpha) {
+void LibererAlphabet(Alphabet* Alpha) {
     detruireVecteur(&Alpha->lettres);
 }
 

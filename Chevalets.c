@@ -1,12 +1,13 @@
 #include <ctype.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #include "Vecteur.h"
 #include "Alphabet.h"
 #include "Chevalets.h"
 
-#include <assert.h>
+
 
 char piochePaquet(Alphabet* Alpha) {
     assert(taille(&Alpha->lettres) > 0);
@@ -36,7 +37,7 @@ void InitPartie(Alphabet* Alpha_jeu, PAQUETS* joueur1, PAQUETS* joueur2) {
 void InitPartiedejfait(PAQUETS* joueur1, PAQUETS* joueur2) {
     initVecteur(&joueur1->lettres, NBLETTREJOUEURDEBUT);
     initVecteur(&joueur2->lettres, NBLETTREJOUEURDEBUT);
-    for (char i = 'A'; i < NBLETTREJOUEURDEBUT + 'A'; i++) {
+    for (char i = 'A'; (char)i < NBLETTREJOUEURDEBUT + 'A'; i++) {
 
         Lettre l1;
         Lettre l2;

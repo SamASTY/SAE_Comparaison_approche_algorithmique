@@ -1,13 +1,13 @@
 #pragma once
 
 
-const enum {
-    TAILLERAIL = 8,  ///< Nombre de lettres maximal pouvant se trouver sur le rail.
-    NBMAXLETTRES = 4 ///< Nombre maximal de lettres pouvant être posées par un·e joueur·se durant son tour.
+enum {
+ TAILLERAIL = 8,  ///< Nombre de lettres maximal pouvant se trouver sur le rail.
+ NBMAXLETTRES = 4 ///< Nombre maximal de lettres pouvant être posées par un·e joueur·se durant son tour.
 };
 
 typedef struct {
-    char lettres[TAILLERAIL]; ///< Lettre se trouvant sur le rail.
+ char lettres[TAILLERAIL]; ///< Lettre se trouvant sur le rail.
 }Rail;
 
 /**
@@ -43,9 +43,9 @@ void inverser_rail(const Rail* dans_ordre, Rail* inverse);
 /**
  * @brief Décale les lettres sur le rail un certain nombre de fois
  * @param[in, out] R Le rail en question
- * @param[in] nombredefoie Le nombre de fois qu'il faut décaler les lettres
+ * @param[in] nombredefois Le nombre de fois qu'il faut décaler les lettres
  */
-void Decalage(Rail *R, int nombredefoie);
+void Decalage(Rail *R, int nombredefois);
 
 /**
  * @brief Duplique un rail

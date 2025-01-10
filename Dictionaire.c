@@ -1,13 +1,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
 #include "Dictionaire.h"
 
-
-
-
-#define TAILLEMAXMOT 100
+enum { TAILLEMAXMOT = 100 };
 
 const char *DICTIONAIRE = "ods4.txt";
 

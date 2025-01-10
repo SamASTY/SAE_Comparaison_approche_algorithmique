@@ -1,10 +1,11 @@
 #pragma once
-#include "vecteur.h"
+#include "Vecteur.h"
 
-const enum {
+enum {
     NBLETTRESTOTAL = 88, ///< Nombre de lettres total se trouvant dans le jeu.
     NBLETTRESALPHABET = 21, ///< Nombre de lettres de l'alphabet présent dans le jeu.
 };
+
 
 
 typedef struct {
@@ -27,14 +28,14 @@ void InitLettres(Lettre* L, char lettre);
 void InitAlphabet(Alphabet* Alpha);
 
 /**
- * @brief Cette fonction permet d'afficher toutes les lettres de l'alphabet encore en jeu.
+ * @brief Cette fonction permet d'afficher toutes les lettres de l'alphabet encore en jeu et leurs quantités
  * @param[in] Alpha L'adresse de l'alphabet en jeu.
  * @sa InitAlphabet()
  */
-void AfficherAlphabet(Alphabet* Alpha);
+void AfficherAlphabet(const Alphabet* Alpha);
 
 /**
- * @brief Cette fonction permet d'afficher toutes les lettres de l'alphabet et leurs quantités.
+ * @brief Cette fonction permet d'afficher toutes les lettres de l'alphabet et leurs quantités
  * @param[in] Alpha L'adresse de l'alphabet.
  * @sa InitAlphabet()
  */
@@ -101,4 +102,4 @@ void PlusAlpha(Alphabet* Alpha, char L);
  * @brief Désalloue une mémoire allouée dynamiquement pour un alphabet
  * @param[out] alpha L'adresse de l'alphabet à libérer
  */
-void LibererAlphabeth(Alphabet* alpha);
+void LibererAlphabet(Alphabet* alpha);

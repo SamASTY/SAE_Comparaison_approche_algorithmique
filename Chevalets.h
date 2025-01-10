@@ -1,7 +1,7 @@
 #pragma once
 #include "Alphabet.h"
 
-const enum {
+enum {
     NBLETTREJOUEURDEBUT = 12, ///< Nombre de lettres que chaque joueur reçoit en début de partie.
     TAILLEMAXMOT = 8, ///Taille maximale qu'un·e joueur·se peut insérer sur le rail.
 };
@@ -15,7 +15,7 @@ typedef struct {
  * @param[in] Alpha L'adresse de l'alphabet en jeu
  * @param[out] L L'adresse de la lettre piochée
  */
-char piochePaquet(Alphabet* Alpha, Lettre* L);
+char piochePaquet(Alphabet* Alpha);
 
 /**
  * @brief Cette fonction permet d'initialiser le début de jeu en distribuant au deux joueur·ses leurs chevalets.
