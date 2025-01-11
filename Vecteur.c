@@ -1,8 +1,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "Item_Vecteur.h"
-#include "vecteur.h"
+#include "Vecteur.h"
 
 int initVecteur(Vecteur* v, int capacite) {
     assert(capacite > 0);

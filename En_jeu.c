@@ -4,11 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "Chevalets.h"
-#include "Alphabet.h"
-#include "Dictionnaire.h"
-#include"En_jeu.h"
-#include "Rail.h"
+#include "En_jeu.h"
 
 
 int lettre_valide(const PAQUETS *joueur, const char *mot) {
@@ -186,10 +182,9 @@ void suppression_lettre_joueur(PAQUETS *J, const char *mot_joueur) {
 void inverser_chaine_caractere(char *chaine) {
     int longueur = (int) strlen(chaine);
     int i, j;
-    char temp;
 
     for (i = 0, j = longueur - 1; i < j; i++, j--) {
-        temp = chaine[i];
+        char temp = chaine[i];
         chaine[i] = chaine[j];
         chaine[j] = temp;
     }
@@ -205,11 +200,11 @@ int coup_joueur_R_V(const char *commande, PAQUETS *Joueur, PAQUETS *Adversaire, 
     if (division != NUL) {
         if ((commande[0] == 'R' || commande[0] == 'r') && appartient_joueur(Joueur, joueur) &&
             appartient_dans_ordre_rail(R_r, rail, division)
-            /*&& est_dans_dico(dictionnaire, mot) && !est_dans_dico(motsDejaJoues, mot)*/) {
+            && est_dans_dico(dictionnaire, mot) && !est_dans_dico(motsDejaJoues, mot)) {
             ajouterMotDejaJoue(motsDejaJoues, mot);
         } else if ((commande[0] == 'V' || commande[0] == 'v') && appartient_joueur(Joueur, joueur) &&
                    appartient_dans_ordre_rail(R_v, rail, division)
-            /*&& est_dans_dico(dictionnaire, mot) && !est_dans_dico(motsDejaJoues, mot)*/) {
+            && est_dans_dico(dictionnaire, mot) && !est_dans_dico(motsDejaJoues, mot)) {
             ajouterMotDejaJoue(motsDejaJoues, mot);
         } else {
             return resultat_coup;
@@ -264,11 +259,11 @@ void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
     Rail *recto, Rail *verso, Alphabet *pioche,
     PAQUETS *Djoueur_adverse, Rail *Drecto, Rail *Dverso,
     const Dictionnaire* dictionnaire, Dictionnaire* motsDejaJoues) {
-        char premcommande[TAILLEMAXCOMMANDE];
-    char commande[TAILLEMAXCOMMANDE];
     int coup = 0;
 
     while (!coup) {
+        char premcommande[TAILLEMAXCOMMANDE];
+        char commande[TAILLEMAXCOMMANDE];
         printf("%d >", jeu);
         lireCommande(premcommande,commande, sizeof(commande));
         if (commande[0] == 'R' || commande[0] == 'V') {
@@ -284,7 +279,7 @@ void gererTour(JOUEUR jeu, PAQUETS *joueur, PAQUETS *joueur_adverse,
             }
         } else if (commande[0] == '-' && est_dans(joueur, commande[DEBUTLETTRES])) {
             coup = coup_joueur_echange_lettre(commande, joueur, pioche);
-        } else if ((commande[0] == 'r' || commande[0] == 'v') && Drecto->lettres[0] != ',' && !strcmp(recto,Drecto)) {
+        } else if ((commande[0] == 'r' || commande[0] == 'v') && Drecto->lettres[0] != ',' && !strcmp((const char*)recto,(const char*)Drecto)) {
             char mot[TAILLEMAXMOT + 1] = "";
             coup = coup_joueur_R_V(commande, Djoueur_adverse, joueur, Drecto, Dverso, mot, dictionnaire, motsDejaJoues);
             if (strlen(mot) == TAILLEMAXMOT && coup == 1)

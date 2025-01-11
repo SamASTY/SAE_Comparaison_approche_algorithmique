@@ -4,12 +4,7 @@
 #include <string.h>
 #include <time.h>
 
-#include "Alphabet.h"
-#include "Chevalets.h"
-#include "Rail.h"
 #include "En_jeu.h"
-#include "test.h"
-#include "Dictionnaire.h"
 
 enum { MOTPREMIERTOUR = 4};
 
@@ -22,7 +17,6 @@ int main() {
         fprintf(stderr, "Impossible de remplir le dictionnaire\n");
         return 1;
     }
-    test_dictionnaire(&dictionnaire);
     setlocale(LC_ALL, "en_US.UTF-8");
     srand(time(NULL));
     Alphabet Pioche;
@@ -44,13 +38,13 @@ int main() {
             scanf("%[^\n]", motjoueur1);
             nettoyerTampon();
         } while (lettre_valide(&Joueur1, motjoueur1) == 0 || strlen(motjoueur1) != MOTPREMIERTOUR
-            /* || !est_dans_dico(&dictionnaire, motjoueur1) || est_dans_dico(&motsDejaJoues, motjoueur1)*/);
+             || !est_dans_dico(&dictionnaire, motjoueur1) || est_dans_dico(&motsDejaJoues, motjoueur1));
         do {
             printf("2 > ");
             scanf("%[^\n]", motjoueur2);
             nettoyerTampon();
         } while (lettre_valide(&Joueur2, motjoueur2) == 0 || strlen(motjoueur2) != MOTPREMIERTOUR
-             /*|| !est_dans_dico(&dictionnaire, motjoueur2) || est_dans_dico(&motsDejaJoues, motjoueur2)*/);
+             || !est_dans_dico(&dictionnaire, motjoueur2) || est_dans_dico(&motsDejaJoues, motjoueur2));
         initialisation = 1;
         ajouterMotDejaJoue(&motsDejaJoues, motjoueur1);
         ajouterMotDejaJoue(&motsDejaJoues, motjoueur2);

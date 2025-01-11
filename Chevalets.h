@@ -13,7 +13,6 @@ typedef struct {
 /**
  * @brief Cette fonction permet de proposer une lettre aléatoirement choisie dans un paquet de cartes.
  * @param[in] Alpha L'adresse de l'alphabet en jeu
- * @param[out] L L'adresse de la lettre piochée
  */
 char piochePaquet(Alphabet* Alpha);
 

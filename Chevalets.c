@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#include "Vecteur.h"
-#include "Alphabet.h"
 #include "Chevalets.h"
 
 

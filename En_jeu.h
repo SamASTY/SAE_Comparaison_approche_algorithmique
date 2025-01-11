@@ -180,7 +180,7 @@ void lireCommande(char *commande,char vrai_commande[TAILLEMAXCOMMANDE], const si
 * @param[in] commande Commande initialement saisie par le joueur.
 * @param[out] vrai_commande Commande sans les espaces.
 */
-void suppression_espace_commande(char* commande, char vrai_commande[TAILLEMAXCOMMANDE]);
+void suppression_espace_commande(const char* commande, char* vrai_commande);
 
 /**
  * @brief Défausse une lettre saisie dans l'entrée standard du paquet d'un·e joueur·se

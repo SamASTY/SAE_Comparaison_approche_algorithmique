@@ -1,12 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
-#include <string.h>
 
-#include "Alphabet.h"
-#include "Chevalets.h"
-#include "Rail.h"
 #include "test.h"
-#include "Dictionnaire.h"
 
 
 void test_distribution_paquets() {
@@ -81,7 +76,7 @@ void test_creation_rail() {
     AfficherRails(&R_verso);
 }
 
-void test_dictionnaire(Dictionnaire *dictionnaire) {
+void test_dictionnaire(const Dictionnaire *dictionnaire) {
     const char *motsLangueFrancaise[] = {
         {"ALLONGE"}, {"LE"}, {"CORPS"}, {"EST"}, {"MORT"}, {"POUR"}, {"DES"}, {"MILLIERS"}, {"UN"}, {"HOMME"}, {"QUI"},
         {"DORT"}, {"MOITIE"}, {"PLEINE"}, {"AMPHORE"}, {"VIDE"}, {"ON"}, {"LA"}, {"VOIT"}, {"SANS"}, {"EFFORT"}
