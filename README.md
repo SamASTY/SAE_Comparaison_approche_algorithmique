@@ -1,5 +1,5 @@
 # Projet académique – Jeu OctoVerso en C
-Projet de première année de BUT informatique en C.
+2025 - Projet de première année de BUT informatique en C.
 #### Objectif : faire, sous forme de ligne de code, un jeu d'OctoVerso jouable par deux joueur·euses.
 ## Prérequis
 Utiliser le compilateur gcc ou mscv pour lancer le fichier main.c.
