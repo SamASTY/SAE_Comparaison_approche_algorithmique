@@ -1,7 +1,21 @@
-# Projet académique – Jeu OctoVerso en C
-2025 - Projet de première année de BUT informatique en C.
-#### Objectif : faire, sous forme de ligne de code, un jeu d'OctoVerso jouable par deux joueur·euses.
-## Prérequis
-Utiliser le compilateur gcc ou mscv pour lancer le fichier main.c.
-## Adaptation
-Vous pouvez modifier le contenu du fichier ods4.txt pour modifier le dictionnaire qui sera utilisé lors de votre partie.
+# 🐙 Projet académique – Jeu OctoVerso en C  
+🗓️ 2025 – Projet de première année de BUT Informatique
+
+---
+
+## 🎯 Objectif
+
+Développer un **jeu d’OctoVerso** en **langage C**, jouable en **ligne de commande** par **deux joueur·euses**.  
+Le projet met en pratique la gestion des entrées utilisateur, les structures de données et la logique de jeu dans un environnement sans interface graphique.
+
+---
+
+## 🛠️ Prérequis
+
+- 💻 Utiliser un **compilateur C** comme :
+  - `gcc` (recommandé)
+  - `msvc` (pour les environnements Windows)
+
+### 🔧 Compilation :
+```bash
+gcc -o octoverso main.c
